@@ -1,11 +1,15 @@
-class Search
+class Search < ApplicationRecord
   require 'uri'
   require 'net/http'
 
-  attr_reader :word, :gifs
-
-  def initialize(word)
-    @word = word
+  def self.find_or_new(word)
+    search_from_db = Search.where(name: word)
+    if search_from_db == 0
+      search = Search.create(word: word)
+    elsif search_from_db == 1
+      
+      string = '2014-03-17 22:56:02'
+      DateTime.strptime(string, "%Y-%m-%d %H:%M:%S")
   end
 
   def gif_urls

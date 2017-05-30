@@ -1,12 +1,12 @@
 class Api::V1::GifController < ApplicationController
 
   def index
-    byebug
-    render "bite me"
   end
 
   def create
-    search = Search.new("hello")
+    Search.find_or_new(word: params[:word])
+    search = Search.create(word: params[:word])
+    render json: search.gif_urls
   end
 
   def show

@@ -21,6 +21,10 @@ ActiveRecord::Schema.define(version: 20170530212349) do
   end
 
   create_table "searches", force: :cascade do |t|
+    t.string "word"
+    t.text "gif_urls"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
