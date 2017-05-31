@@ -2,15 +2,15 @@ class Search < ApplicationRecord
   require 'uri'
   require 'net/http'
 
-  def self.find_or_new(word)
-    search_from_db = Search.where(name: word)
-    if search_from_db == 0
-      search = Search.create(word: word)
-    elsif search_from_db == 1
-      
-      string = '2014-03-17 22:56:02'
-      DateTime.strptime(string, "%Y-%m-%d %H:%M:%S")
-  end
+  # def self.find_recent_or_create(word, recent)
+  #   search_from_db ||= Search.where(word: word).order(:updated_at)
+  #   return search = Search.create(word: word) if !search_from_db[0]
+  #   if (search_from_db[0].updated_at - DateTime.now).abs > recent * 3600
+  #     search = Search.create(word: word)
+  #   else
+  #     search = search_from_db[0]
+  #   end
+  # end
 
   def gif_urls
     {"#{word}": create_array}
