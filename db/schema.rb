@@ -14,8 +14,8 @@ ActiveRecord::Schema.define(version: 20170530212349) do
 
   create_table "gifs", force: :cascade do |t|
     t.string "query"
-    t.string "url"
-    t.integer "count"
+    t.string "gif_id"
+    t.integer "count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -4,9 +4,9 @@ class Api::V1::GifController < ApplicationController
   end
 
   def create
-    # search = Search.find_recent_or_create(word: params[:word], 24)
-    search = Search.new(word: params[:word])
-    render json: search.gif_urls
+    gif = Gif.find_or_create_by(query: params[:word], gif_id: params[:id])
+    gif.update(count: gif.count +=1)
+    render status: 200
   end
 
   def show
