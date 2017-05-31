@@ -1,2 +1,4 @@
 class Gif < ApplicationRecord
+
+
 end

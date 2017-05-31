@@ -1,12 +1,16 @@
-class Search
+class Search < ApplicationRecord
   require 'uri'
   require 'net/http'
 
-  attr_reader :word, :gifs
-
-  def initialize(word)
-    @word = word
-  end
+  # def self.find_recent_or_create(word, recent)
+  #   search_from_db ||= Search.where(word: word).order(:updated_at)
+  #   return search = Search.create(word: word) if !search_from_db[0]
+  #   if (search_from_db[0].updated_at - DateTime.now).abs > recent * 3600
+  #     search = Search.create(word: word)
+  #   else
+  #     search = search_from_db[0]
+  #   end
+  # end
 
   def gif_urls
     {"#{word}": create_array}
