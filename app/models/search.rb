@@ -32,7 +32,7 @@ class Search < ApplicationRecord
   end
 
   def self.gif_urls(search)
-    likes = Like.where(word_id: search.word.id).group(:gif_id).count.sort_by(&:last).map{|array| Gif.find(array[1]).url_id}[0..2]
+    likes = Like.where(word_id: search.word.id).group(:gif_id).count.sort_by(&:last).map{|array| Gif.find(array[0]).url_id}[0..2]
     api_urls = search.results.map {|result|result.gif.url_id}
     {"#{search.word.word}": gif_urls = (likes + api_urls).uniq[0..9] }
   end

@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20170601000732) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "gifs", force: :cascade do |t|
     t.string "url_id"
   end
@@ -22,8 +25,8 @@ ActiveRecord::Schema.define(version: 20170601000732) do
   end
 
   create_table "results", force: :cascade do |t|
-    t.integer "search_id"
-    t.integer "gif_id"
+    t.bigint "search_id"
+    t.bigint "gif_id"
     t.index ["gif_id"], name: "index_results_on_gif_id"
     t.index ["search_id"], name: "index_results_on_search_id"
   end
