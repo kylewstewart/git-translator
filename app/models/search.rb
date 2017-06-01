@@ -1,39 +1,40 @@
 class Search < ApplicationRecord
+  belongs_to :word
+  has_many  :results
+  has_many  :gifs, through: :results
+
   require 'uri'
   require 'net/http'
 
-  # def self.find_recent_or_create(word, recent)
-  #   search_from_db ||= Search.where(word: word).order(:updated_at)
-  #   return search = Search.create(word: word) if !search_from_db[0]
-  #   if (search_from_db[0].updated_at - DateTime.now).abs > recent * 3600
-  #     search = Search.create(word: word)
-  #   else
-  #     search = search_from_db[0]
-  #   end
-  # end
-
-  def gif_urls
-    {"#{word}": create_array}
+  def self.find_recent_or_create_search(word, how_recent)
+    searches = word.searches.order(:created_at)
+    if searches.length == 0 || (searches[0].updated_at - DateTime.now).abs > how_recent * 3600
+      search = Search.create(word_id: word.id)
+      Search.call_api(search)
+    else
+      search = searches[0]
+    end
+    search
   end
 
-  def create_array
-    (call_api - gifs).unshift(gifs).flatten[0..9]
-  end
-
-  def call_api
-    url = URI("http://api.giphy.com/v1/gifs/search?q=#{word}&api_key=dc6zaTOxFJmzC")
+  def self.call_api(search)
+    url = URI("http://api.giphy.com/v1/gifs/search?q=#{search.word.word}&api_key=dc6zaTOxFJmzC")
     http = Net::HTTP.new(url.host, url.port)
     request = Net::HTTP::Get.new(url)
     request["authorization"] = 'Token 2f9a56d5e1bbd1c3e695e8291949b11b5aa23b66'
     request["cache-control"] = 'no-cache'
     request["postman-token"] = '62b2aed9-28a7-06ba-9378-38cfb71f2cc9'
     response = http.request(request)
-    JSON.parse(response.read_body)["data"][0..9].map{|hsh| hsh["id"]}
+    JSON.parse(response.read_body)["data"][0..9].map do |data|
+      gif = Gif.create(url_id: data["id"])
+      Result.create(search_id: search.id, gif_id: gif.id)
+    end
   end
 
-  def gifs
-    db_gifs ||= Gif.where(query: word).order(:count).limit(3)
-    db_gifs.length == 0 ? @gifs = [] : db_gifs.map{|gif| gif}
+  def self.gif_urls(search)
+    likes = Like.where(word_id: search.word.id).group(:gif_id).count.sort_by(&:last).map{|array| Gif.find(array[1]).url_id}[0..2]
+    api_urls = search.results.map {|result|result.gif.url_id}
+    {"#{search.word.word}": gif_urls = (likes + api_urls).uniq[0..9] }
   end
 
 end

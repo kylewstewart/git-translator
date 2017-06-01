@@ -1,16 +1,12 @@
 class Api::V1::SearchController < ApplicationController
 
-  def index
-  end
-
   def create
-    # search = Search.find_recent_or_create(word: params[:word], 24)
-    search = Search.new(word: params[:word])
-    render json: search.gif_urls
+    word = Word.find_or_create_by(word: params[:word])
+    search = Search.find_recent_or_create_search(word, 24)
+
+    render json: Search.gif_urls(search)
   end
 
-  def show
-  end
 
 
 

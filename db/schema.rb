@@ -10,21 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170530212349) do
+ActiveRecord::Schema.define(version: 20170601000732) do
 
   create_table "gifs", force: :cascade do |t|
-    t.string "query"
-    t.string "gif_id"
-    t.integer "count", default: 0
+    t.string "url_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "word_id"
+    t.integer "gif_id"
+  end
+
+  create_table "results", force: :cascade do |t|
+    t.integer "search_id"
+    t.integer "gif_id"
+    t.index ["gif_id"], name: "index_results_on_gif_id"
+    t.index ["search_id"], name: "index_results_on_search_id"
+  end
+
+  create_table "searches", force: :cascade do |t|
+    t.string "word_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "searches", force: :cascade do |t|
+  create_table "words", force: :cascade do |t|
     t.string "word"
-    t.text "gif_urls"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
 end
