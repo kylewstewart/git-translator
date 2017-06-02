@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20170601000732) do
 
   create_table "gifs", force: :cascade do |t|
     t.string "url_id"
+    t.string "bitly_url"
   end
 
   create_table "likes", force: :cascade do |t|
