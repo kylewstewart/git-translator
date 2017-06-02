@@ -29,7 +29,7 @@ development:
   encoding: unicode
   database: db_development
   pool: 5
-  username: macbookpro
+  username: Jonny
   password:
 
 test:
@@ -37,7 +37,7 @@ test:
   encoding: unicode
   database: db_test
   pool: 5
-  username: macbookpro
+  username: Jonny
   password:
 
 production:
@@ -45,5 +45,5 @@ production:
   encoding: unicode
   database: db_production
   pool: 5
-  username: macbookpro
+  username: Jonny
   password:
