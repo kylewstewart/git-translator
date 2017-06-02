@@ -26,7 +26,7 @@ class Search < ApplicationRecord
     request["postman-token"] = '62b2aed9-28a7-06ba-9378-38cfb71f2cc9'
     response = http.request(request)
     JSON.parse(response.read_body)["data"][0..9].map do |data|
-      gif = Gif.create(url_id: data["id"])
+      gif = Gif.create(url_id: data["id"], bitly_url: data["bitly_url"])
       Result.create(search_id: search.id, gif_id: gif.id)
     end
   end
